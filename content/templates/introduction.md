@@ -27,36 +27,6 @@ Go templates provide an extremely simple template language that adheres to the b
 
 {{< youtube gnJbPO-GFIw >}}
 
-## Basic Syntax
-
-Golang templates are HTML files with the addition of [variables][variables] and [functions][functions]. Golang template variables and functions are accessible within `{{ }}`.
-
-### Access a Predefined Variable
-
-```
-{{ foo }}
-```
-
-Parameters for functions are separated using spaces. The following example calls the `add` function with inputs of `1` and `2`:
-
-```
-{{ add 1 2 }}
-```
-
-#### Methods and Fields are Accessed via dot Notation
-
-Accessing the Page Parameter `bar` defined in a piece of content's [front matter][].
-
-```
-{{ .Params.bar }}
-```
-
-#### Parentheses Can be Used to Group Items Together
-
-```
-{{ if or (isset .Params "alt") (isset .Params "caption") }} Caption {{ end }}
-```
-
 ## Variables
 
 Each Go template gets a data object. In Hugo, each template is passed a `Page`. See [variables][] for more information.
@@ -87,6 +57,40 @@ Go templates only ship with a few basic functions but also provide a mechanism f
 
 [Hugo template functions][functions] provide additional functionality specific to building websites. Functions are called by using their name followed by the required parameters separated by spaces. Template functions cannot be added without recompiling Hugo.
 
+## Basic Syntax
+
+Golang templates are HTML files with the addition of [variables][variables] and [functions][functions]. Golang template variables and functions are accessible within `{{ }}`.
+
+### Accessing a Predefined Variable
+
+To access a predefined variable:
+
+```
+{{ foo }}
+```
+
+Parameters for functions are separated using spaces. The following example calls the `add` function with inputs of `1` and `2`:
+
+```
+{{ add 1 2 }}
+```
+
+#### Accessing Methods and Fields
+
+Methods and fields are accessed via dot notation. To acess the parameter `bar` defined in a page's [front matter][] you would use:
+
+```
+{{ .Params.bar }}
+```
+
+#### Grouping Items Together
+
+Parentheses can be used to group items together:
+
+```
+{{ if or (isset .Params "alt") (isset .Params "caption") }} Caption {{ end }}
+```
+
 ### Example 1: Adding Numbers
 
 ```
@@ -106,26 +110,6 @@ Note that both examples make us of Go template's [math functions][].
 {{% note "Additional Boolean Operators" %}}
 There are more boolean operators than those listed in the Hugo docs in the [Golang template documentation](http://golang.org/pkg/text/template/#hdr-Functions).
 {{% /note %}}
-
-## Includes
-
-When including another template, you will pass to it the data it will be
-able to access. To pass along the current context, please remember to
-include a trailing dot. The templates location will always be starting at
-the `/layouts/` directory within Hugo.
-
-### Template and Partial Examples
-
-```
-{{ template "partials/header.html" . }}
-```
-
-Starting with Hugo v0.12, you may also use the `partial` call
-for [partial templates][partials]:
-
-```
-{{ partial "header.html" . }}
-```
 
 ## Logic
 
@@ -214,6 +198,26 @@ The first example above could be simplified as:
 {{ else if isset .Params "caption" }}
     {{ index .Params "caption" }}
 {{ end }}
+```
+
+## Includes
+
+When including another template, you will pass to it the data it will be
+able to access. To pass along the current context, please remember to
+include a trailing dot. The templates location will always be starting at
+the `/layouts/` directory within Hugo.
+
+### Template and Partial Examples
+
+```
+{{ template "partials/header.html" . }}
+```
+
+Starting with Hugo v0.12, you may also use the `partial` call
+for [partial templates][partials]:
+
+```
+{{ partial "header.html" . }}
 ```
 
 ## Pipes
